@@ -34,6 +34,8 @@ public class CustomerStepdefination {
 
         if (data.get("name").equals("Random")) {
             name = new Faker().company().name();
+        } else if (data.get("name").equals("Empty")) {
+            name = "";
         } else {
             name = data.get("name");
         }
@@ -80,5 +82,11 @@ public class CustomerStepdefination {
         payload.setDescription(customerResponse.getDescription());
         requestBuilder.postRequest(payload, endPoint);
         requestBuilder.response.prettyPrint();
+    }
+
+    @Then("I verify error message for customer with status code {int}")
+    public void iVerifyErrorMessageForCustomerWithStatusCode(int expectedStatusCode, Map<String, String> data) {
+        Assert.assertEquals(expectedStatusCode, requestBuilder.response.getStatusCode());
+        Assert.assertEquals(data.get("errorMsg"), requestBuilder.response.jsonPath().get("message"));
     }
 }

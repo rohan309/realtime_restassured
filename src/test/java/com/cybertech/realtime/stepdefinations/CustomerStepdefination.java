@@ -39,11 +39,27 @@ public class CustomerStepdefination {
         } else {
             name = data.get("name");
         }
+/**
+ * Below method will work only for hard core payload
+ */
+       /* payload = CustomerPayload.builder()
+                .name(name)
+                        .description("Sample description")
+                                .build();*/
 
+        String desc = null;
+
+        switch (data.get("description")){
+            case "Random": desc=new Faker().company().catchPhrase();
+            break;
+            case "Empty": desc="";
+            break;
+            default:data.get("description");
+        }
 
         payload.setName(name);
         payload.setArchived(Boolean.valueOf(data.get("archived")));
-        payload.setDescription(data.get("description"));
+        payload.setDescription(desc);
         requestBuilder.postRequest(payload, endPoint);
         requestBuilder.response.prettyPrint();
     }
@@ -53,7 +69,9 @@ public class CustomerStepdefination {
 
         Assert.assertEquals(Integer.parseInt(data.get("statusCode")), requestBuilder.response.getStatusCode());
         customerResponse = requestBuilder.response.as(CustomerResponse.class);
-        Assert.assertEquals(name, customerResponse.getName());
+//        Assert.assertEquals(name, customerResponse.getName());
+        Assert.assertEquals(payload.getName(), customerResponse.getName());
+
         Assert.assertFalse(customerResponse.isArchived());
         Assert.assertEquals(payload.getDescription(), customerResponse.getDescription());
     }

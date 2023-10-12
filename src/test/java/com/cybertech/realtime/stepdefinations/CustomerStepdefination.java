@@ -11,8 +11,9 @@ import io.cucumber.java.en.Then;
 import org.junit.Assert;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class CustomerStepdefination {
     ApiRequestBuilder requestBuilder = ApiRequestBuilder.getInstance();
@@ -20,6 +21,7 @@ public class CustomerStepdefination {
     CustomerPayload payload;
     PropertyHandler propertyHandler;
     CustomerResponse customerResponse;
+
 
     @Given("I create customer")
     public void iCreateCustomer(Map<String, String> data) throws IOException {
@@ -56,7 +58,7 @@ public class CustomerStepdefination {
             break;
             default:data.get("description");
         }
-
+        
         payload.setName(name);
         payload.setArchived(Boolean.valueOf(data.get("archived")));
         payload.setDescription(desc);
@@ -94,7 +96,6 @@ public class CustomerStepdefination {
 
         payload = new CustomerPayload();
 
-
         payload.setName(customerResponse.getName());
         payload.setArchived(customerResponse.isArchived());
         payload.setDescription(customerResponse.getDescription());
@@ -106,5 +107,18 @@ public class CustomerStepdefination {
     public void iVerifyErrorMessageForCustomerWithStatusCode(int expectedStatusCode, Map<String, String> data) {
         Assert.assertEquals(expectedStatusCode, requestBuilder.response.getStatusCode());
         Assert.assertEquals(data.get("errorMsg"), requestBuilder.response.jsonPath().get("message"));
+    }
+
+    @Then("I verify customer created in all customers")
+    public void iCustomerCreatedInAllCustomers(Map<String,String> data) {
+        Assert.assertEquals(Integer.parseInt(data.get("statusCode")),requestBuilder.response.getStatusCode());
+        customerResponse=requestBuilder.response.as(CustomerResponse.class);
+
+        List<String> customerNames= Collections.singletonList("");
+    }
+
+    @And("I get all customer and verify created customer")
+    public void iGetAllCustomerAndVerifyCreatedCustomer() {
+//        requestBuilder.getRequestWithPathParam();
     }
 }

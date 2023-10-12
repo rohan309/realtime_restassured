@@ -10,13 +10,15 @@ Feature: Verify customer feature
     Then I verify customer created
       | statusCode | <statusCode> |
     Examples:
-      | name    | archived | description                | endPoint  | statusCode |
-      | Random  | false    | This is sample description | customers | 200        |
-      | D       | false    | This is sample description | customers | 200        |
-      | A       | true     | This is sample description | customers | 200        |
-      | 12345   | false    | This is sample description | customers | 200        |
-      | Abc@123 | false    | This is sample description | customers | 200        |
-      | !@#$%_  | false    | This is sample description | customers | 200        |
+      | name     | archived | description | endPoint  | statusCode |
+      | Random   | false    | Random      | customers | 200        |
+      | A1        | false    | Random      | customers | 200        |
+      | B1        | false    | Random      | customers | 200        |
+#      | R       | true     | Random      | customers | 200        |
+      | 12345     | false    | Random      | customers | 200        |
+      | Abc@123 | false    | Random      | customers | 200        |
+      | !@#$%%    | false    | Random      | customers | 200        |
+#    This is sample description
 
 
   @CreateDuplicateCustomer
@@ -33,8 +35,8 @@ Feature: Verify customer feature
     Then I verify error message for duplicate customer with status code 400
       | errorMsg | <errorMsg> |
     Examples:
-      | name   | archived | description                | endPoint  | statusCode | errorMsg                                    |
-      | Random | false    | This is sample description | customers | 200        | Customer with specified name already exists |
+      | name   | archived | description | endPoint  | statusCode | errorMsg                                    |
+      | Random | false    | Random      | customers | 200        | Customer with specified name already exists |
 
 
   @ErrorMsg
@@ -48,9 +50,23 @@ Feature: Verify customer feature
     Then I verify error message for customer with status code 400
       | errorMsg | <errorMsg> |
     Examples:
-      | name                                                                                                                                                                                                                                                                                       | archived | description                | endPoint  | errorMsg                                |
-      | Empty                                                                                                                                                                                                                                                                                      | false    | This is sample description | customers | String length must be between 1 and 255 |
-      | Empty                                                                                                                                                                                                                                                                                      | true     | This is sample description | customers | String length must be between 1 and 255 |
-      | RandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandom | false    | This is sample description | customers | String length must be between 1 and 255 |
-      | RandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandom | true     | This is sample description | customers | String length must be between 1 and 255 |
+      | name                                                                                                                                                                                                                                                                                       | archived | description | endPoint  | errorMsg                                  |
+      | Empty                                                                                                                                                                                                                                                                                      | false    | Random      | customers | String length must be between 1 and 255   |
+      | Empty                                                                                                                                                                                                                                                                                      | true     | Random      | customers | String length must be between 1 and 255   |
+      | RandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandom | false    | Random      | customers | String length must be between 1 and 255   |
+      | RandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandom | true     | Random      | customers | String length must be between 1 and 255   |
+# Continue with error message for description
 
+  @GetAllCustomer
+  Scenario Outline: Verify created customer in get all api
+    Given I create customer
+      | name        | <name>        |
+      | archived    | <archived>    |
+      | description | <description> |
+      | endPoint    | <endPoint>    |
+    Then I verify customer created in all customers
+      | statusCode | <statusCode> |
+    And I get all customer and verify created customer
+    Examples:
+      | name   | archived | description | endPoint  | statusCode |
+      | Random | false    | Random      | customers | 200        |

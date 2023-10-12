@@ -141,4 +141,9 @@ public class ApiRequestBuilder {
         setPathParam(param);
         execute(Method.GET, endPoint);
     }
+    public void getRequestWithoutPathParam(String endPoint) throws IOException {
+        setRequestConfig();
+//        setPathParam(param);
+        execute(Method.GET, endPoint);
+    }
 }

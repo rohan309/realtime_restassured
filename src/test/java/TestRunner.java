@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = "src/test/resources/Features",
         glue = "com.cybertech.realtime.stepdefinations",
-        tags = "@GetAllProjects",
+        tags = "@ValidateSchema",
         plugin = {
         "pretty",
         "html:target/cucumber-reports.html",

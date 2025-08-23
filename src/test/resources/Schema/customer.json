@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Single Customer Response",
+  "type": "object",
+  "properties": {
+    "id": { "type": "integer" },
+    "name": { "type": "string" },
+    "archived": { "type": "boolean" },
+    "created": { "type": "integer" },
+    "url": { "type": "string", "format": "uri" },
+    "allowedActions": {
+      "type": "object",
+      "properties": {
+        "canModify": { "type": "boolean" },
+        "canDelete": { "type": "boolean" }
+      },
+      "required": ["canModify", "canDelete"]
+    },
+    "description": { "type": ["string", "null"] }
+  },
+  "required": ["id", "name", "archived", "created", "url", "allowedActions"]
+}

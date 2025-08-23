@@ -8,7 +8,8 @@ public class Main {
     public static void main(String[] args) {
 //        String desc=new Faker().company().buzzword();
         String desc=new Faker().company().catchPhrase();
-        System.out.println(desc);
+        String title=new Faker().name().title();
+        System.out.println(title);
         System.out.println();
 
     }

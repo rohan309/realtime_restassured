@@ -10,14 +10,14 @@ Feature: Verify customer feature
     Then I verify customer created
       | statusCode | <statusCode> |
     Examples:
-      | name     | archived | description | endPoint  | statusCode |
-      | Random   | false    | Random      | customers | 200        |
-      | A1        | false    | Random      | customers | 200        |
-      | B1        | false    | Random      | customers | 200        |
+      | name    | archived | description | endPoint  | statusCode |
+      | Random  | false    | Random      | customers | 200        |
+      | A1      | false    | Random      | customers | 200        |
+      | B1      | false    | Random      | customers | 200        |
 #      | R       | true     | Random      | customers | 200        |
-      | 12345     | false    | Random      | customers | 200        |
+      | 12345   | false    | Random      | customers | 200        |
       | Abc@123 | false    | Random      | customers | 200        |
-      | !@#$%%    | false    | Random      | customers | 200        |
+      | !@#$%%  | false    | Random      | customers | 200        |
 #    This is sample description
 
 
@@ -50,11 +50,11 @@ Feature: Verify customer feature
     Then I verify error message for customer with status code 400
       | errorMsg | <errorMsg> |
     Examples:
-      | name                                                                                                                                                                                                                                                                                       | archived | description | endPoint  | errorMsg                                  |
-      | Empty                                                                                                                                                                                                                                                                                      | false    | Random      | customers | String length must be between 1 and 255   |
-      | Empty                                                                                                                                                                                                                                                                                      | true     | Random      | customers | String length must be between 1 and 255   |
-      | RandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandom | false    | Random      | customers | String length must be between 1 and 255   |
-      | RandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandom | true     | Random      | customers | String length must be between 1 and 255   |
+      | name                                                                                                                                                                                                                                                                                       | archived | description | endPoint  | errorMsg                                |
+      | Empty                                                                                                                                                                                                                                                                                      | false    | Random      | customers | String length must be between 1 and 255 |
+      | Empty                                                                                                                                                                                                                                                                                      | true     | Random      | customers | String length must be between 1 and 255 |
+      | RandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandom | false    | Random      | customers | String length must be between 1 and 255 |
+      | RandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandomRandom | true     | Random      | customers | String length must be between 1 and 255 |
 # Continue with error message for description
 
   @GetAllCustomer
@@ -70,3 +70,9 @@ Feature: Verify customer feature
     Examples:
       | name   | archived | description | endPoint  | statusCode |
       | Random | false    | Random      | customers | 200        |
+
+  @ValidateSchema
+  Scenario: Validate json schema
+    Given I set up request to get the customer
+    When I hit an api
+    Then I verify json schema for get customer response

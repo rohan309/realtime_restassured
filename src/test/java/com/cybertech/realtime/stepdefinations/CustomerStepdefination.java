@@ -8,12 +8,17 @@ import com.github.javafaker.Faker;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import io.restassured.http.Method;
 import org.junit.Assert;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchema;
 
 public class CustomerStepdefination {
     ApiRequestBuilder requestBuilder = ApiRequestBuilder.getInstance();
@@ -120,5 +125,28 @@ public class CustomerStepdefination {
     @And("I get all customer and verify created customer")
     public void iGetAllCustomerAndVerifyCreatedCustomer() {
 //        requestBuilder.getRequestWithPathParam();
+    }
+
+    @Given("I set up request to get the customer")
+    public void iSetUpRequestToGetTheCustomer() {
+        requestBuilder.setRequestConfig();
+    }
+
+    @When("I hit an api")
+    public void iHitAnApi() {
+        requestBuilder.getRequestWithPathParam("7","customers");
+    }
+
+    @Then("I verify json schema for get customer response")
+    public void iVerifyJsonSchemaForGetCustomerResponse() {
+        System.out.println();
+        Assert.assertEquals(requestBuilder.response.statusCode(),200);
+        requestBuilder.response.prettyPrint();
+        String schemaFormat="src/test/resources/Schema/customer.json";
+        requestBuilder.response.then()
+                .assertThat()
+                .body(matchesJsonSchema(new File(schemaFormat)));
+        System.out.println("✅ JSON schema validated successfully for Get Customer response!");
+
     }
 }

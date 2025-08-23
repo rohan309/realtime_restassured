@@ -36,8 +36,13 @@ public class ApiRequestBuilder {
         return apiRequestBuilder;
     }
 
-    public void setRequestConfig() throws IOException {
-        PropertyHandler property = new PropertyHandler("config.properties");
+    public void setRequestConfig() {
+        PropertyHandler property = null;
+        try {
+            property = new PropertyHandler("config.properties");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         RestAssured.useRelaxedHTTPSValidation();
         RequestSpecBuilder requestSpecBuilder = new RequestSpecBuilder();
         requestSpecification = requestSpecBuilder.setBaseUri(property.getProperty("baseUri"))
@@ -46,6 +51,7 @@ public class ApiRequestBuilder {
                 .addHeader("Authorization", property.getProperty("token"))
                 .setBasePath(property.getProperty("basePath"))
                 .build();
+
     }
 
     public void execute(Method method, String endPoint) {
@@ -79,7 +85,6 @@ public class ApiRequestBuilder {
         }
     }
 
-
     public void setQueryParams(Map<String, Object> queryParams) {
         Optional.ofNullable(queryParams).ifPresent(params -> requestSpecification.queryParams(params));
     }
@@ -99,11 +104,11 @@ public class ApiRequestBuilder {
             Optional.ofNullable(body).ifPresent(obj -> requestSpecification.body(obj));
         }
      */
+
     public <T> void setRequestBody(T classObject) {
         Optional.ofNullable(classObject).ifPresent(obj -> requestSpecification.body(obj));
 
     }
-
 
     public JSONObject setRequestBodyWithFile(String filePath) {
         JSONObject jsonObject = null;
@@ -136,13 +141,16 @@ public class ApiRequestBuilder {
         execute(Method.GET, endPoint);
     }
 
-    public void getRequestWithPathParam(String param, String endPoint) throws IOException {
+    public void getRequestWithPathParam(String param, String endPoint) {
         setRequestConfig();
         setPathParam(param);
         execute(Method.GET, endPoint);
     }
-    public void getRequestWithoutPathParam(String endPoint) throws IOException {
+
+    public void getRequestWithoutPathParam(String endPoint) {
+
         setRequestConfig();
+
 //        setPathParam(param);
         execute(Method.GET, endPoint);
     }
